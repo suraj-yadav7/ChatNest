@@ -2,6 +2,7 @@ import User from "../models/user.model.js"
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { validationResult } from "express-validator"
+import generateToken from "../utils/generateTokenAndCookies.js";
 
 // User Signup
 export const signup = async(req, res)=>{
@@ -70,16 +71,15 @@ export const login = async(req, res)=>{
         }
 
         const {username, password} = req.body
-        const userExist = await User.findOne({username})
+        const userExist = await User.findOne({username});
         if(!userExist){
             return res.status(400).json({status:false, message:"User don't exist, Signup"})
         }
 
         const passwordCheck = await bcryptjs.compare(password, userExist.password)
         if(passwordCheck){
-            const jwtSign   = process.env.JWTSECRET
-            const data      = {id:userExist._id.valueOf()}
-            const jwtToken  = jwt.sign(data, jwtSign)
+            let userId    = userExist._id.valueOf()
+            let jwtToken  = generateToken(userId, res);
             return res.status(200).json({status:true, message:"User Successfully Logged", jwtToken : jwtToken, userID:userExist._id.valueOf()})
         }else{
             return res.status(402).json({status:false, message:"Password is incorrect"})
@@ -89,17 +89,16 @@ export const login = async(req, res)=>{
         console.log("Error occured at Login: ", error)
         return res.status(500).json({status:false, message:"Internal Server Error"})
     }
-
 };
 
 // User logout
 export const logout = async(req, res)=>{
     try{
-        return res.status(200).json({status:true, message:"User successfully logged out"})
+        return res.status(200).json({status:true, message:"User successfully logged out", jwtToken : ""})
     }
     catch(error){
         console.log("Error occured at logout: ", error)
-        return res.status(500).json({status:false, message:"Internal Server Error"})
+        return res.status(500).json({status:false, message:"Internal Server Error", })
     }
 };
 

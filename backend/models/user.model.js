@@ -2,18 +2,18 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     fullname:{
-        type:String,
+        type : String,
         required:true
     },
     username:{
-        type:String,
-        required:true,
-        unique:true
+        type : String,
+        unique:true,
+        required:true
     },
     gender:{
         type:String,
-        required:true,
-        enums:["male", "female"]
+        enums:["male", "female"],
+        required:true
     },
     email:{
         type:String,
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         defaulr:""
     }
-},{timestamp:true})
+},{timestamps:true})
 
 const User = mongoose.model("user", userSchema)
 
