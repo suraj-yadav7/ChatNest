@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import User from "../models/user.model"
+import User from "../models/user.model.js"
 
 const protectRoute = async(req, res, next) => {
     let jwtSecret = process.env.JWTSECRET
@@ -18,7 +18,8 @@ const protectRoute = async(req, res, next) => {
         if(!user){
             res.status(404).json({status:false, message:"User Not Found"})
         }
-        req.user = usernext()
+        req.user = user
+        next()
     }
     catch(error){
         console.log("Error occured at protectRoute: ", error)

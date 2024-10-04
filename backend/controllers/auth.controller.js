@@ -141,6 +141,19 @@ export const updatePassword = async(req, res)=>{
     }
     catch(error){
         console.log("Error occured at update password: ", error)
-        return res.status(500).json({status:false, message:"Internal server error"})
+        return res.status(500).json({status:false, message:"Internal Server Error"});
+    }
+};
+
+// Get all user for sidebar except current user.
+export const getUserForSidebar = async(req, res)=>{
+    try{
+        const currentUser = req.user._id
+        const allUser = await User.find({_id: {$ne:currentUser}}).select("-password")
+        return res.status(200).json({status:true, message:"All users fetched", data:allUser})
+    }
+    catch(error){
+        console.log("Error Occurred at getUserForSidebar: ", error)
+        return res.status(500).json({status:false, message:"Internal Server Error"})
     }
 };

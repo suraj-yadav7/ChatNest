@@ -43,4 +43,4 @@ app.use(morgan("dev"))
 
 // User Auth
 app.use("/api/auth",    authRouter);
-app.use("/api/message", messageRouter)
+app.use("/api/message", messageRouter);
