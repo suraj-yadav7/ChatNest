@@ -3,10 +3,12 @@ import cors from "cors"
 import dotenv from "dotenv"
 import morgan from "morgan"
 import colors from "colors"
+
 import authRouter from "./routes/auth.routes.js"
-import connectDB from "./config/db.js"
 import messageRouter from "./routes/message.routes.js"
 import cookieParser from "cookie-parser"
+
+import connectDB from "./config/db.js"
 
 const app = express()
 dotenv.config()
