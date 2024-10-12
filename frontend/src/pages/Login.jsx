@@ -1,22 +1,42 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { toast } from 'react-toastify';
+import axios from 'axios'
 
 const Login = () => {
+  const base_url = import.meta.env.VITE_BASE_URL
   const [loginData, setLoginData] = useState({
     username :"",
     password :"",
-  })
+  });
 
-const handleChange=(e)=>{
-  const {value, name} = e.target
-  setSingupData({...singupData, [name]:value})
-}
+  const handleChange=(e)=>{
+    const {value, name} = e.target
+    setLoginData({...loginData, [name]:value})
+  };
 
-const handleSubmit=(e)=>{
-  e.preventDefault()
-}
-
+  const handleSubmit= async(e)=>{
+    e.preventDefault()
+    try{
+      let response = await axios.post(`${base_url}/api/auth/login`, loginData);
+      if(response.data?.status === true){
+        toast.success(response.data.message)
+        sessionStorage.setItem("jwttoken", response.data.jwtToken)
+        setTimeout(()=>{
+          Navigate("/")
+        },1200)
+      }
+    }
+    catch(error){
+      if(error.response?.data.error){
+        toast.warning(error.response.data.error[0]?.msg)
+      }
+      else{
+        toast.warning(error.response.data.message)
+      }
+    }
+  };
 
   return (
     <>
@@ -27,9 +47,9 @@ const handleSubmit=(e)=>{
             <span className='text-black-400'> ChatNest</span>
           </h1>
           <form onSubmit={handleSubmit}>
-            <Input label="Username" className="input input-bordered h-12 " placeholder="Enter Username" onChange={handleChange}/>
-            <Input label="Password" className="input input-bordered h-12 " placeholder="Enter Password" onChange={handleChange}/>
-            <Button className='w-20 my-4'>Login</Button>
+            <Input label="Username" name="username" value={loginData.username} className="input input-bordered h-12 " placeholder="Enter Username" onChange={handleChange}/>
+            <Input label="Password" name="password" value={loginData.password } className="input input-bordered h-12 " placeholder="Enter Password" onChange={handleChange}/>
+            <Button type="submit" className='w-20 my-4'>Login</Button>
           </form>
         </div>
       </div>

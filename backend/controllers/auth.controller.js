@@ -49,7 +49,7 @@ export const signup = async(req, res)=>{
             email    : userCreated.email,
             gender   : userCreated.gender
         }
-        return res.status(201).json({message:"User created successfully",
+        return res.status(201).json({status:true, message:"User created successfully",
             data:data})
     }
     catch(error){

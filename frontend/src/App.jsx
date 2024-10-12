@@ -4,6 +4,8 @@ import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify'
 
 function App() {
 
@@ -16,6 +18,7 @@ function App() {
             <Route exact path='/signup'   element={<Signup/>} />
           </Routes>
       </Router>
+      <ToastContainer />
     </>
   )
 };
