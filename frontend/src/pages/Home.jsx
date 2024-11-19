@@ -3,9 +3,9 @@ import react from "react"
 const Home = ()=>{
     return(
         <>
-            <div className="h-screen flex justify-center items-center">
-                <h3>This is home</h3>
-            </div>
+            <div className='flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+			    <MessageContainer />
+		    </div>
         </>
     )
 };

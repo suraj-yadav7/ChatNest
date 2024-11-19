@@ -34,7 +34,7 @@ export const signup = async(req, res)=>{
         const profileAvatarGirl =  await `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
         // User creation
-        const user = await new User({
+        const user = new User({
             fullname : fullname,
             username : username,
             gender   : gender,
