@@ -1,7 +1,8 @@
 import Conversation from "./conversation";
+import useGetConversation from "../../hooks/useGetConversation";
 
 const Conversations = () => {
-    const [conversations, setConversations]  = useState([])
+    const {loading, conversations}  = useGetConversation()
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
 			{conversations.map((conversation, idx) => (
