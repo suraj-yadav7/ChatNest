@@ -1,4 +1,5 @@
 import react from "react"
+import MessageContainer from "../components/messages/MessageContainer"
 
 const Home = ()=>{
     return(

@@ -6,8 +6,10 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify'
+import { useAuthContext } from './context/AuthContext.jsx'
 
 function App() {
+	const {authUser}   = useAuthContext()
 
   return (
     <>
