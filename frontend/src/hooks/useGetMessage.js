@@ -3,8 +3,8 @@ import { useConversation } from "../zustand/useConversation"
 import toast from "react-hot-toast"
 
 const useGetMessage = () =>{
-    const [loading, setLoading]  = useState(false)
-    const {messages, setMessages, selectedConversation} = useConversation()
+    const [loading, setLoading]  = useState(false);
+    const {messages, setMessages, selectedConversation} = useConversation();
 
     const getMessage = async() =>{
         setLoading(true)

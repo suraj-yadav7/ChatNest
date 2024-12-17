@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import axios from 'axios';
+
+const base_url = import.meta.env.VITE_BASE_URL
 
 const useGetConversation = () => {
     const [loading, setLoading] = useState(false)
@@ -7,8 +10,13 @@ const useGetConversation = () => {
 
     const getConversation = async()=>{
         setLoading(true)
+        const jwttoken = sessionStorage.getItem("jwttoken")
         try{
-            let response  = await axios.get("/api/user")
+            let response  = await axios.get(`${base_url}/api/user/all`, {
+                headers:{
+                    Authorization: token? `Bearer ${jwttoken}`:''
+                }
+            })
             if(response.status){
                 setConversation(response.data.data)
                 toast.success(response.data.message)
@@ -16,7 +24,7 @@ const useGetConversation = () => {
         }
         catch(error){
             console.log("Error occur while getting conversation: ", error)
-            toast.error(error.response.data.message)
+            toast.error(error?.response.data.message)
         }
         finally{
             setLoading(false)

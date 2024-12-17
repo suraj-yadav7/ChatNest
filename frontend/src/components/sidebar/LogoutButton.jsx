@@ -1,4 +1,5 @@
 import { BiLogOut } from "react-icons/bi";
+import { useState } from "react";
 
 const LogoutButton = () => {
 	const [loading, setLoading]  = useState(true)

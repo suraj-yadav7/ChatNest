@@ -77,13 +77,13 @@ export const login = async(req, res)=>{
         }
 
         const passwordCheck = await bcryptjs.compare(password, userExist.password)
-        if(passwordCheck){
-            let userId    = userExist._id.valueOf()
-            let jwtToken  = generateToken(userId, res);
-            return res.status(200).json({status:true, message:"User Successfully Logged", jwtToken : jwtToken, userID:userExist._id.valueOf()})
-        }else{
-            return res.status(402).json({status:false, message:"Password is incorrect"})
+        if(!passwordCheck){
+            return res.status(400).json({status:false, message:"Password is incorrect"})
         }
+        let userId    = userExist._id.valueOf()
+        let jwtToken  = generateToken(userId, res);
+        return res.status(200).json({status:true, message:"User Successfully Logged", jwtToken : jwtToken, userID:userExist._id.valueOf()})
+
     }
     catch(error){
         console.log("Error occured at Login: ", error)
@@ -142,18 +142,5 @@ export const updatePassword = async(req, res)=>{
     catch(error){
         console.log("Error occured at update password: ", error)
         return res.status(500).json({status:false, message:"Internal Server Error"});
-    }
-};
-
-// Get all user for sidebar except current user.
-export const getUserForSidebar = async(req, res)=>{
-    try{
-        const currentUser = req.user._id
-        const allUser = await User.find({_id: {$ne:currentUser}}).select("-password")
-        return res.status(200).json({status:true, message:"All users fetched", data:allUser})
-    }
-    catch(error){
-        console.log("Error Occurred at getUserForSidebar: ", error)
-        return res.status(500).json({status:false, message:"Internal Server Error"})
     }
 };

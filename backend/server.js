@@ -9,6 +9,7 @@ import messageRouter from "./routes/message.routes.js"
 import cookieParser from "cookie-parser"
 
 import connectDB from "./config/db.js"
+import userRouter from "./routes/user.routes.js"
 
 const app = express()
 dotenv.config()
@@ -46,3 +47,4 @@ app.use(morgan("dev"))
 // User Auth
 app.use("/api/auth",    authRouter);
 app.use("/api/message", messageRouter);
+app.use("/api/user",    userRouter);

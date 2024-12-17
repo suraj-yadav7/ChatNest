@@ -3,6 +3,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { toast } from 'react-toastify';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const base_url = import.meta.env.VITE_BASE_URL
@@ -10,6 +11,8 @@ const Login = () => {
     username :"",
     password :"",
   });
+
+  const navigate = useNavigate()
 
   const handleChange=(e)=>{
     const {value, name} = e.target
@@ -24,7 +27,7 @@ const Login = () => {
         toast.success(response.data.message)
         sessionStorage.setItem("jwttoken", response.data.jwtToken)
         setTimeout(()=>{
-          Navigate("/")
+          navigate("/")
         },1200)
       }
     }
@@ -48,7 +51,7 @@ const Login = () => {
           </h1>
           <form onSubmit={handleSubmit}>
             <Input label="Username" name="username" value={loginData.username} className="input input-bordered h-12 " placeholder="Enter Username" onChange={handleChange}/>
-            <Input label="Password" name="password" value={loginData.password } className="input input-bordered h-12 " placeholder="Enter Password" onChange={handleChange}/>
+            <Input label="Password" type="password" name="password" value={loginData.password } className="input input-bordered h-12 " placeholder="Enter Password" onChange={handleChange}/>
             <Button type="submit" className='w-20 my-4'>Login</Button>
           </form>
         </div>
