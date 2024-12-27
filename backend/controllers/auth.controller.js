@@ -1,20 +1,11 @@
 import User from "../models/user.model.js"
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
-import { validationResult } from "express-validator"
 import generateToken from "../utils/generateTokenAndCookies.js";
 
 // User Signup
-export const signup = async(req, res)=>{
+export const signup = async(req, res, next)=>{
     try{
-        const errors = validationResult(req)
-        let specificError
-        if(!errors.isEmpty()){
-            specificError = errors.array().filter(error =>{
-                return error.msg
-            })
-            return res.status(400).json({status:false, error:specificError});
-        }
         const {fullname, email, username, password, confirmPassword, gender} = req.body
         if(password !== confirmPassword){
             return res.status(400).json({message:"password don't match"})
@@ -41,25 +32,24 @@ export const signup = async(req, res)=>{
             email    : email,
             password : hashPassword,
             profile  : gender === "male"?profileAvatarBoy:profileAvatarGirl
-        })
+        });
         const userCreated = await user.save()
         const data = {
             name     : userCreated.fullname,
             username : userCreated.username,
             email    : userCreated.email,
             gender   : userCreated.gender
-        }
+        };
         return res.status(201).json({status:true, message:"User created successfully",
             data:data})
     }
     catch(error){
-        console.log("Error occured at signup: ", error)
-        return res.status(500).json({status:false, message:"Internal Sever Error"})
+        next(error)
     }
 };
 
 // User Login
-export const login = async(req, res)=>{
+export const login = async(req, res, next)=>{
     try{
         const errors = validationResult(req)
         let specificError
@@ -86,24 +76,22 @@ export const login = async(req, res)=>{
 
     }
     catch(error){
-        console.log("Error occured at Login: ", error)
-        return res.status(500).json({status:false, message:"Internal Server Error"})
+        next(error)
     }
 };
 
 // User logout
-export const logout = async(req, res)=>{
+export const logout = async(req, res, next)=>{
     try{
         return res.status(200).json({status:true, message:"User successfully logged out", jwtToken : ""})
     }
     catch(error){
-        console.log("Error occured at logout: ", error)
-        return res.status(500).json({status:false, message:"Internal Server Error", })
+        next(error)
     }
 };
 
 // User password forget
-export const forgetPassword = async(req, res)=>{
+export const forgetPassword = async(req, res, next)=>{
     try{
         const {email}   = req.body
         //Existing user check
@@ -114,13 +102,12 @@ export const forgetPassword = async(req, res)=>{
             return res.status(200).json({status:true, nessage:"User Found Successfully", data:{username:userCheck.username}})
     }
     catch(error){
-        console.log("Error occured at forget password: ", error)
-        return res.status(500).json({status:false, message:"Internal server error"})
+        next(error)
     }
 };
 
 // User password update
-export const updatePassword = async(req, res)=>{
+export const updatePassword = async(req, res, next)=>{
     try{
         const {username, password, confirmPassword} = req.body
         if(password !== confirmPassword){
@@ -140,7 +127,6 @@ export const updatePassword = async(req, res)=>{
         }
     }
     catch(error){
-        console.log("Error occured at update password: ", error)
-        return res.status(500).json({status:false, message:"Internal Server Error"});
+        next(error)
     }
 };

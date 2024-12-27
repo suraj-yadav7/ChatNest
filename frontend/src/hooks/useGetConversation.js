@@ -6,7 +6,7 @@ const base_url = import.meta.env.VITE_BASE_URL
 
 const useGetConversation = () => {
     const [loading, setLoading] = useState(false)
-    const [conversation, setConversation] = useState([])
+    const [conversation, setConversation] = useState([]);
 
     const getConversation = async()=>{
         setLoading(true)

@@ -3,6 +3,7 @@ import User from "../models/user.model.js"
 
 const protectRoute = async(req, res, next) => {
     let jwtSecret = process.env.JWTSECRET
+    console.log("rq.header: ", req.headers)
     try{
         const token = req.headers.jwttoken
         if(!token){
@@ -22,9 +23,8 @@ const protectRoute = async(req, res, next) => {
         next()
     }
     catch(error){
-        console.log("Error occured at protectRoute: ", error)
-        res.status(500).json({status:false, message:"Internal Server Error"})
+        next(error)
     }
-}
+};
 
 export default protectRoute;

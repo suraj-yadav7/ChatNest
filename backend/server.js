@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser"
 
 import connectDB from "./config/db.js"
 import userRouter from "./routes/user.routes.js"
+import { globalErrorHandler } from "./utils/globalErrorHandler.js"
 
 const app = express()
 dotenv.config()
@@ -28,7 +29,7 @@ connectDB()
 })
 .catch((error)=>{
     console.log(`Mongodb failed to connect: ${error}`.bgRed.white)
-})
+});
 
 app.get("/", (req, res)=>{
     res.send("<h1>Chat WebApp </h1>")
@@ -48,3 +49,6 @@ app.use(morgan("dev"))
 app.use("/api/auth",    authRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/user",    userRouter);
+
+//Global error handler
+app.use(globalErrorHandler);
