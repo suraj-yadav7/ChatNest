@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useConversation } from "../zustand/useConversation"
 import toast from "react-hot-toast"
+import axios from "axios";
 
 const useGetMessage = () =>{
     const [loading, setLoading]  = useState(false);
@@ -9,8 +10,11 @@ const useGetMessage = () =>{
     const getMessage = async() =>{
         setLoading(true)
         try{
-            const response = await fetch(`/api/get/message`)
-            const result   = await response.json()
+            const response = await axios.get(`${base_url}/api/message/get/id=${user}`, {
+                headers:{
+                    Authorization: jwttoken? `Bearer ${jwttoken}`:''
+                }
+            })
             if(result.error) throw new Error(result.error)
             setMessages(result.data)
         }

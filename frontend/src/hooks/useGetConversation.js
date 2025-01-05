@@ -6,19 +6,24 @@ const base_url = import.meta.env.VITE_BASE_URL
 
 const useGetConversation = () => {
     const [loading, setLoading] = useState(false)
-    const [conversation, setConversation] = useState([]);
+    const [conversations, setConversations] = useState([]);
 
     const getConversation = async()=>{
         setLoading(true)
         const jwttoken = sessionStorage.getItem("jwttoken")
+        if(!jwttoken){
+            console.log("Need jwt token.")
+            return false
+        }
         try{
             let response  = await axios.get(`${base_url}/api/user/all`, {
                 headers:{
-                    Authorization: token? `Bearer ${jwttoken}`:''
+                    Authorization: jwttoken? `Bearer ${jwttoken}`:''
                 }
             })
+            console.log("response: ", response)
             if(response.status){
-                setConversation(response.data.data)
+                setConversations(response.data.data)
                 toast.success(response.data.message)
             }
         }
@@ -33,7 +38,7 @@ const useGetConversation = () => {
     useEffect(()=>{
         getConversation()
     },[])
-    return {loading, conversation}
+    return {loading, conversations}
 };
 
 export default useGetConversation;

@@ -51,15 +51,6 @@ export const signup = async(req, res, next)=>{
 // User Login
 export const login = async(req, res, next)=>{
     try{
-        const errors = validationResult(req)
-        let specificError
-        if(!errors.isEmpty()){
-            specificError = errors.array().filter(error =>{
-                return  error.msg
-            })
-            return res.status(400).json({status:false, error:specificError})
-        }
-
         const {username, password} = req.body
         const userExist = await User.findOne({username});
         if(!userExist){

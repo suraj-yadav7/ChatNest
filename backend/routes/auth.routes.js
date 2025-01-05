@@ -4,8 +4,8 @@ import {loginValidation, signupValidation} from "../middlewares/inputValidation.
 
 const authRouter = express.Router();
 
-authRouter.post("/login",   loginValidation,login)
-authRouter.post("/signup",  signupValidation, signup)
+authRouter.post("/login",   loginValidation(),   login)
+authRouter.post("/signup",  signupValidation(),  signup)
 authRouter.post("/logout", logout)
 authRouter.post("/forget-password", forgetPassword)
 authRouter.post("/update-password", updatePassword)

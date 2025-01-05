@@ -36,14 +36,13 @@ export const sendMessage = async(req, res, next)=>{
 
 export const getMessage = async(req, res, next)=>{
     try {
-        const {id:userToChatId} = req.params
+        const {id} = req.params
         const senderId = req.user._id
-
         const conversation = await Conversation.findOne({
-            participants :{ $all : [senderId, userToChatId]}}).populate("messages")
+            participants :{ $all : [senderId, id]}}).populate("messages")
 
             if(!conversation){
-                return res.status(200).json({status:true, message:"successfully fetched message",data:[]})
+                return res.status(200).json({status:true, message:"No conversation happen.",data:[]})
             }
         return res.status(200).json({status:true, message:"successfully fetched message", data:conversation.messages})
     } catch (error) {

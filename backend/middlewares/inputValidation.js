@@ -1,6 +1,7 @@
-import {body, validationResult} from 'express-validator'
+import { body, validationResult } from 'express-validator';
 
-export const signupValidation = [
+export const signupValidation = ()=>{
+    return [
     body("fullname")
     .isLength({min:5}).withMessage("fullname must 3 character long")
     .isString().withMessage("fullname must be string"),
@@ -37,8 +38,10 @@ export const signupValidation = [
         next()
     }
 ]
+}
 
-export const loginValidation = [
+export const loginValidation = ()=>{
+    return [
     body("username")
     .notEmpty().withMessage("username field cannot be empty"),
 
@@ -58,4 +61,5 @@ export const loginValidation = [
 
         next()
     }
-]
+    ]
+}
